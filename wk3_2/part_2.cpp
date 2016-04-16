@@ -5,6 +5,9 @@ public:
     int v;
     Sample(int n):v(n) { }
 // 在此处补充你的代码
+    Sample( const Sample & s){
+        v = s.v*2;
+    }
 };
 int main() {
     Sample a(5);
