@@ -83,7 +83,7 @@ public:
                 ProduceTick = (ProduceTick + 1) % 5;
                 if (tempTick == ProduceTick) {
                     cout << setfill('0') << setw(3) << timer << ' ';
-                    cout << HQName[type] << "  headquarter stops making warriors" << endl;
+                    cout << HQName[type] << " headquarter stops making warriors" << endl;
                     return false;
                 }
             }
