@@ -3,8 +3,7 @@ using namespace std;
 class Sample{
 public:
     int v;
-    Sample(int n):v(n) { }
-// 在此处补充你的代码
+    Sample(int n):v(n) {}
     Sample( const Sample & s){
         v = s.v*2;
     }
