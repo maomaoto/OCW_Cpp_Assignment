@@ -6,6 +6,10 @@ class MyInt  {
         MyInt(int n) { nVal = n; }
         int ReturnVal() { return nVal; }
 // 在此处补充你的代码
+        MyInt & operator-(const MyInt & operand2){
+            nVal -= operand2.nVal;
+            return *this;
+        }
 };
 int main ()  {
     MyInt objInt(10);
