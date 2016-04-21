@@ -10,11 +10,14 @@ char Int2Char[10] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
 class BigInt{
 private:
-    char intStr[150];
+    char intStr[250];
 public:
     BigInt(){}
     BigInt(const char *s){
         strcpy(intStr, s);
+    }
+    BigInt(const BigInt & bi){
+        strcpy(intStr, bi.intStr);
     }
     ~BigInt(){}
 
@@ -45,11 +48,39 @@ public:
         }
     }
 
+    bool operator<(const BigInt & bi2){
+
+        bool sign = false;
+
+        int len1 = strlen(intStr);
+        int len2 = strlen(bi2.intStr);
+
+        if (len1 < len2) sign = true;
+        else if (len1 > len2) sign = false;
+        else {
+            for (int i = 0; i<len1; i++){
+                if (Char2Int(intStr[i]) < Char2Int(bi2.intStr[i]) ){
+                    sign = true;
+                    break;
+                } else if (Char2Int(intStr[i]) > Char2Int(bi2.intStr[i])){
+                    sign = false;
+                    break;
+                }
+            }
+        }
+
+        return sign;
+    }
+
+    bool operator>=(const BigInt & bi2){
+        bool sign = *this < bi2;
+        return sign;
+    }
     BigInt & operator+(const BigInt & bi2){
         // add from the end
-        char oper1[150];
-        char oper2[150];
-        char result[150] = {'\0'};
+        char oper1[250];
+        char oper2[250];
+        char result[250] = {'\0'};
         strcpy(oper1, intStr);
         strcpy(oper2, bi2.intStr);
         int len1 = strlen(oper1);
@@ -97,9 +128,9 @@ public:
 
     BigInt & operator-(const BigInt & bi2){
         // subtract from the end
-        char oper1[150];
-        char oper2[150];
-        char result[150] = {'\0'};
+        char oper1[250];
+        char oper2[250];
+        char result[250] = {'\0'};
         strcpy(oper1, intStr);
         strcpy(oper2, bi2.intStr);
         int len1 = strlen(oper1);
@@ -163,10 +194,14 @@ public:
             result[i] = tempChar;
 
         }
-        // if carry at the highest position
-        if (carry != 0){
-            tempChar = Int2Char[carry];
-            result[lenResult] = tempChar;
+        // remove 0
+        for (int i = lenResult - 1; i >=0; i--){
+            if (result[i] == '0') result[i] = '\0';
+            else break;
+        }
+        // add sign
+        if (!sign){
+            result[strlen(result)] = '-';
         }
 
         reverse(result, result+strlen(result));
@@ -176,8 +211,94 @@ public:
     }
 
 
-    BigInt & operator*(const BigInt &);
-    BigInt & operator/(const BigInt &);
+    BigInt & operator*(const BigInt & bi2){
+        // multiply from the end
+        // result = oper2 + oper2 +... (oper1[i] times)
+        char oper1[250];
+        char oper2[250];
+        BigInt result("0");
+
+        char tempOper[250] = {'\0'};
+        strcpy(oper1, intStr);
+        strcpy(oper2, bi2.intStr);
+        int len1 = strlen(oper1);
+
+        reverse(oper1, oper1+len1);
+
+        int mul;
+
+        for (int i = 0; i< len1; i++){
+            mul = Char2Int(oper1[i]);
+            if (i == 0){
+                strcpy(tempOper, oper2);
+            } else {
+                strcat(tempOper, "0");
+            }
+
+            for (int j = 0; j < mul ; j++){
+                result = result + BigInt(tempOper);
+            }
+
+        }
+
+        strcpy(intStr, result.intStr);
+
+        return *this;
+    }
+
+    BigInt & operator/(const BigInt & bi2){
+        // divide
+        char oper1[250];
+        char oper2[250];
+        BigInt result("0");
+
+        char tempOper[250] = {'\0'};
+        strcpy(oper1, intStr);
+        strcpy(oper2, bi2.intStr);
+        int len1 = strlen(oper1);
+        int len2 = strlen(oper2);
+
+        if (len2 < len1) {
+            strcpy(intStr, "0");
+            return *this;
+        }
+
+        int lenDiff = len1 - len2;
+        strcpy(tempOper, oper2);
+        if (lenDiff) {
+            char fillZero[250] = {'\0'};
+            memset(fillZero, '0', lenDiff);
+            strcat(tempOper, fillZero);
+        }
+
+
+        for (int i = 0; i<= lenDiff; i++){
+
+
+        }
+
+        int mul1;
+
+        for (int i = 0; i< len1; i++){
+            mul1 = Char2Int(oper1[i]);
+            if (i == 0){
+                strcpy(tempOper, oper2);
+            } else {
+                strcat(tempOper, "0");
+            }
+
+            for (int j = 0; j < mul1 ; j++){
+                result = result + BigInt(tempOper);
+            }
+
+        }
+
+        strcpy(intStr, result.intStr);
+
+        return *this;
+    }
+
+
 
     void SetValue(const char *s){
         strcpy(intStr, s);
@@ -188,7 +309,7 @@ public:
 };
 
 istream & operator >> (istream &is, BigInt & bi){
-    char temp[150];
+    char temp[250];
     is >> temp;
     bi.SetValue(temp);
     return is;
@@ -207,6 +328,16 @@ int main() {
     switch (oper) {
     case '+':
         c = a + b;
+        break;
+    case '-':
+        c = a - b;
+        break;
+    case '*':
+        c = a * b;
+        break;
+    case '/':
+        c = a / b;
+        break;
     }
     cout << c;
     return 0;
