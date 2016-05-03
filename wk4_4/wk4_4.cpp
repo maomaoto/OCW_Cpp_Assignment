@@ -74,6 +74,7 @@ public:
 
     bool operator>=(const BigInt & bi2){
         bool sign = *this < bi2;
+        sign = !sign;
         return sign;
     }
     BigInt & operator+(const BigInt & bi2){
@@ -195,7 +196,7 @@ public:
 
         }
         // remove 0
-        for (int i = lenResult - 1; i >=0; i--){
+        for (int i = lenResult - 1; i >0; i--){
             if (result[i] == '0') result[i] = '\0';
             else break;
         }
@@ -250,7 +251,7 @@ public:
         // divide
         char oper1[250];
         char oper2[250];
-        BigInt result("0");
+        char result[250] = {'\0'};
 
         char tempOper[250] = {'\0'};
         strcpy(oper1, intStr);
@@ -258,7 +259,7 @@ public:
         int len1 = strlen(oper1);
         int len2 = strlen(oper2);
 
-        if (len2 < len1) {
+        if (len2 > len1) {
             strcpy(intStr, "0");
             return *this;
         }
@@ -273,27 +274,27 @@ public:
 
 
         for (int i = 0; i<= lenDiff; i++){
-
-
+            int tempResult = 0;
+            while(*this >= BigInt(tempOper)){
+                *this = *this - BigInt(tempOper);
+                tempResult++;
+            }
+            result[i] = Int2Char[tempResult];
+            tempOper[strlen(tempOper)-1] = '\0';
         }
 
-        int mul1;
-
-        for (int i = 0; i< len1; i++){
-            mul1 = Char2Int(oper1[i]);
-            if (i == 0){
-                strcpy(tempOper, oper2);
-            } else {
-                strcat(tempOper, "0");
-            }
-
-            for (int j = 0; j < mul1 ; j++){
-                result = result + BigInt(tempOper);
-            }
-
+        // remove 0s
+        int lenResult = strlen(result);
+        reverse(result, result+lenResult);
+        for (int i = lenResult - 1; i >0; i--){
+            if (result[i] == '0') result[i] = '\0';
+            else break;
         }
+        lenResult = strlen(result);
+        reverse(result, result+lenResult);
 
-        strcpy(intStr, result.intStr);
+
+        strcpy(intStr, result);
 
         return *this;
     }
