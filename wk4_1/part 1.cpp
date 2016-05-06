@@ -14,8 +14,8 @@ public:
         if (s) {
             //r = 0;
             //i = 0;
-            char * pchPlus = strchr(s, '+');
-            char * pchEnd = strchr(s, 'i');
+            char * pchPlus = (char*)strchr(s, '+');
+            char * pchEnd = (char*)strchr(s, 'i');
             // only consider good input...
             if ( (pchPlus != NULL) & (pchEnd != NULL)){
                 char strReal[pchPlus-s+1];
