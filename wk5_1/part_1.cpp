@@ -5,7 +5,15 @@ using namespace std;
 // 在此处补充你的代码
 
 class MyString: public string{
-private:
+public:
+    MyString(): string() {}
+    MyString(const char *s): string(s) {}
+    MyString(const MyString& mstr): string(mstr) {}
+
+    MyString& operator= (const Mystring& mstr){
+        ((string *) this)->operator=(mstr);
+        return *this;
+    }
 
 };
 
