@@ -10,8 +10,13 @@ public:
     MyString(const char *s): string(s) {}
     MyString(const MyString& mstr): string(mstr) {}
 
-    MyString& operator= (const Mystring& mstr){
+    MyString& operator= (const MyString& mstr){
         ((string *) this)->operator=(mstr);
+        return *this;
+    }
+
+    MyString& operator+ (const MyString& mstr) {
+        ((string *) this)->append(mstr);
         return *this;
     }
 
