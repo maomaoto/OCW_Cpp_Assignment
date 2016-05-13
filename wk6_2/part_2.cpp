@@ -2,6 +2,8 @@
 using namespace std;
 class A {
 // 在此处补充你的代码
+public:
+    virtual ~A() { cout << "destructor A" << endl; }
 };
 class B:public A {
     public:
