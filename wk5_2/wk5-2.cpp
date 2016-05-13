@@ -34,18 +34,20 @@ public:
 class CDragon: public CKnight {
 private:
     WeaponType wp1;
-    float morale;
+    double morale;
 public:
-    CDragon(int s, int l, float m): CKnight(s, l){
-        int temp = (m+0.005)*100;
-        morale = (float)temp/100;
+    CDragon(int s, int l, double m): CKnight(s, l){
+        //int temp = (m+0.005)*100;
+        //morale = (double)temp/100;
+        morale = m;
         wp1 = static_cast<WeaponType>(s%3);
     }
 
     ~CDragon(){}
 
     void PrintInfo(){
-        cout << "It has a " << WeaponName[wp1] << ",and it's morale is " << setprecision(3) << morale << endl;
+        cout << "It has a " << WeaponName[wp1] << ",and it's morale is " << fixed << setprecision(2) << morale << endl;
+
     }
 
 };
@@ -160,7 +162,7 @@ public:
                 switch(ProduceSeq[ProduceTick]){
                 case dragon:
                     KnightList[TotalKnight-1] = new CDragon(TotalKnight, KnightLife[ProduceSeq[ProduceTick]],
-                                                            (float)life/KnightLife[ProduceSeq[ProduceTick]]);
+                                                            (double)life/KnightLife[ProduceSeq[ProduceTick]]);
                     break;
                 case ninja:
                     KnightList[TotalKnight-1] = new CNinja(TotalKnight, KnightLife[ProduceSeq[ProduceTick]]);
