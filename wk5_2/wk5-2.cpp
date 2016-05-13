@@ -27,6 +27,7 @@ public:
     }
 
     virtual void PrintInfo() = 0;
+    virtual ~CKnight(){}
 };
 
 
@@ -40,6 +41,8 @@ public:
         morale = (float)temp/100;
         wp1 = static_cast<WeaponType>(s%3);
     }
+
+    ~CDragon(){}
 
     void PrintInfo(){
         cout << "It has a " << WeaponName[wp1] << ",and it's morale is " << setprecision(3) << morale << endl;
@@ -56,6 +59,8 @@ public:
         wp2 = static_cast<WeaponType>((s+1)%3);
     }
 
+    ~CNinja(){}
+
     void PrintInfo() {
         cout << "It has a " << WeaponName[wp1] << " and a " << WeaponName[wp2] << endl;
     }
@@ -69,6 +74,8 @@ public:
         wp1 = static_cast<WeaponType>(s%3);
     }
 
+    ~CIceman(){}
+
     void PrintInfo(){
         cout << "It has a " << WeaponName[wp1] << endl;
     }
@@ -79,6 +86,7 @@ private:
     int loyalty;
 public:
     CLion(int s, int l, int loyalty): CKnight(s, l), loyalty(loyalty){}
+    ~CLion(){}
     void PrintInfo(){
         cout << "It's loyalty is " << loyalty << endl;
     }
@@ -87,6 +95,7 @@ public:
 class CWolf: public CKnight {
 public:
     CWolf(int s, int l): CKnight(s, l) {}
+    ~CWolf(){}
     void PrintInfo(){}
 };
 
@@ -100,7 +109,7 @@ public:
     int ProduceTick;
     static int KnightLife[5];
     int timer;
-    CKnight* KnightList[50];
+    CKnight* KnightList[500];
 
 
     HeadQuarter(HQType t, int l): type(t), life(l) {
@@ -126,8 +135,16 @@ public:
         ProduceTick = 0;
         timer = 0;
 
-        for (int i = 0; i<50; i++){
+        for (int i = 0; i<500; i++){
             KnightList[i] = NULL;
+        }
+
+    }
+
+    ~HeadQuarter(){
+        for (int i = 0; i<500; i++){
+            if (KnightList[i] != NULL) delete KnightList[i];
+            else break;
         }
 
     }
@@ -180,6 +197,8 @@ public:
 
 
     }
+
+
 
 };
 
