@@ -1,5 +1,5 @@
 /*
-    wk 6-4 Å]Ã~¥@¬É²×·¥ª©
+    wk 6-4 çµ‚æ¥µé­”ç¸ä¸–ç•Œ
 */
 
 #include <iostream>
@@ -100,6 +100,38 @@ public:
     ~CWolf(){}
     void PrintInfo(){}
 };
+
+class CWeapon {
+public:
+    virtual attack() = 0;
+
+};
+
+class CSword: public CWeapon {
+private:
+    int force;
+public:
+    void attack(){}
+    void depreciate(){}
+};
+
+class CArrow: public CWeapon {
+private:
+    int force;
+public:
+    void attack(){}
+    void depreciate(){}
+
+};
+
+class CBomb: public CWeapon {
+private:
+public:
+    void attack(){}
+
+};
+
+
 
 class HeadQuarter {
 public:
