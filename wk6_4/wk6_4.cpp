@@ -9,11 +9,14 @@ using namespace std;
 enum KnightType{dragon, ninja, iceman, lion, wolf};
 char KnightName[][7] = {"dragon", "ninja", "iceman", "lion", "wolf"};
 
-enum HQType{red, blue};
-char HQName[][5] = {"red", "blue"};
+//enum HQType{red, blue};
+//char HQName[][5] = {"red", "blue"};
 
 enum WeaponType{sword, bomb, arrow};
 char WeaponName[][6] = {"sword", "bomb", "arrow"};
+
+enum TeamType{red, blue, none};
+char TeamName[][5] = {"red", "blue", "none"};
 
 class CKnight {
 public:
@@ -104,6 +107,7 @@ public:
 class CWeapon {
 public:
     virtual attack() = 0;
+    virtual depreciate() = 0;
 
 };
 
@@ -128,14 +132,24 @@ class CBomb: public CWeapon {
 private:
 public:
     void attack(){}
+    void depreciate(){}
+};
+
+class CPlace {
+private:
+    int life;
+};
+
+class CCity: public CPlace {
+    CKnight* BlueKnight, RedKnight;
+    TeamType victory, flag;
+    int VictoryCount;
 
 };
 
-
-
-class HeadQuarter {
+class HeadQuarter: public CPlace {
 public:
-    HQType type;
+    TeamType type;
     int life;
     int TotalKnight;
     int KnightCount[5];
@@ -144,9 +158,10 @@ public:
     static int KnightLife[5];
     int timer;
     CKnight* KnightList[500];
+    CKnight* Enemy[2];
 
 
-    HeadQuarter(HQType t, int l): type(t), life(l) {
+    HeadQuarter(TeamType t, int l): type(t), life(l) {
         TotalKnight = 0;
         for (int i = 0; i<5; i++){
             KnightCount[i] = 0;
