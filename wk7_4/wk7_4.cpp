@@ -2,9 +2,39 @@
 #include <iomanip>
 #include <cstring>
 #include <cctype>
+#include <cstdlib>
 using namespace std;
 
 char int_char[10] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+
+// 判斷字串s是不是整數
+bool is_num(string s){
+    bool flag = true;
+    for (unsigned int i = 0; i<s.length(); i++){
+        if (!isdigit(s[i])){
+            flag = false;
+            break;
+        }
+    }
+    return flag;
+}
+
+// 整數轉成字串
+string int_to_str(int n){
+    // convert int to string from the end
+    string temp;
+    do {
+        temp += int_char[n%10];
+        n = n/10;
+    } while(n != 0);
+
+    // reverse string
+    string temp2;
+    for (int i = temp.length()-1; i >=0; i++){
+        temp2 += temp[i];
+    }
+    return temp2;
+}
 
 class StrManip{
 private:
@@ -32,9 +62,9 @@ public:
     // 判斷S1, S2是否為0-99999之間的整數，若是則將其轉化為整數值加法
     // 若不是，則作字符串加法，返回的值為一字符串
     string add(string s1, string s2){
-        if (this->is_num(s1) && this->is_num(s2)){
+        if (is_num(s1) && is_num(s2)){
             int temp = atoi(s1.c_str()) + atoi(s2.c_str());
-            string s_temp = this->int_to_str(temp);
+            string s_temp = int_to_str(temp);
             return s_temp;
         }
         else {
@@ -44,38 +74,11 @@ public:
         }
     }
 
-    // 判斷字串s是不是整數
-    bool is_num(string s){
-        bool flag = true;
-        for (int i = 0; i<s.length; i++){
-            if (!isdigit(s[i])){
-                flag = false;
-                break;
-            }
-        }
-        return flag;
-    }
 
-    // 整數轉成字串
-    string int_to_str(int n){
-        // convert int to string from the end
-        string temp;
-        do {
-            temp.append(int_char[n%10]);
-            n = n/10;
-        } while(n != 0);
-
-        // reverse string
-        string temp2;
-        for (int i = temp.length()-1; i >=0; i++){
-            temp2.append(temp.[i]);
-        }
-        return temp2;
-    }
 
     // 在第n個字符串中從左開始找尋S字符串，返回其第一次出現的位置；若沒有找到，返回字符串的長度
     int find(string s, int n){
-        int pos;
+        unsigned int pos;
         pos = str[n+1].find(s);
         if (pos != string::npos) return pos;
         else return str[n+1].length();
@@ -83,7 +86,7 @@ public:
 
     // 在第n個字符串中從右開始找尋S字符串，返回其第一次出現的位置；若沒有找到，返回字符串的長度
     int rfind(string s, int n){
-        int pos;
+        unsigned int pos;
         pos = str[n+1].rfind(s);
         if (pos != string::npos) return pos;
         else return str[n+1].length();
