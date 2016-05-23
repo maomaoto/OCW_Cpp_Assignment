@@ -74,8 +74,6 @@ public:
         }
     }
 
-
-
     // 在第n個字符串中從左開始找尋S字符串，返回其第一次出現的位置；若沒有找到，返回字符串的長度
     int find(string s, int n){
         unsigned int pos;
@@ -121,6 +119,111 @@ public:
     }
 
 };
+
+bool is_command(string cmd){
+    if (cmd.compare("copy") == 0){
+        return true;
+    } else if (cmd.compare("add") == 0){
+        return true;
+    } else if (cmd.compare("find")){
+        return true;
+    } else if (cmd.compare("rfind")){
+        return true;
+    } else if (cmd.compare("insert")){
+        return true;
+    } else if (cmd.compare("reset")){
+        return true;
+    } else if (cmd.compare("print")){
+        return true;
+    } else if (cmd.compare("printall")){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+string get_str(string &s){
+    string temp;
+    bool found = false;
+    int pos;
+    // 把找到的字串存到temp裡
+    for (int i = 0; i<s.length(); i++){
+        if (s[i] == ' '){
+            if (found) {
+                pos = i;
+                break;
+            }
+        } else {
+            temp.append(1, s[i]);
+            found = true;
+        }
+    }
+
+    // 清掉 s 裡完取出來的第一個字串
+    s.erase(0, pos);
+
+    return temp;
+}
+int get_int(string &s, StrManip & my_str){}
+
+
+
+void compute(string cmd, string &s, StrManip & my_str){
+    string temp;
+    if (cmd.compare("copy") == 0){
+        temp = get_str(s);
+        if (is_command(temp)) {
+            compute(temp, s, my_str);
+            temp = get_str(s);
+        }
+        int N = atoi(temp.c_str());
+        temp = get_str(s);
+        if (is_command(temp)) {
+            compute(temp, s, my_str);
+            temp = get_str(s);
+        }
+        int X = atoi(temp.c_str());
+        temp = get_str(s);
+        if (is_command(temp)) {
+            compute(temp, s, my_str);
+            temp = get_str(s);
+        }
+        int L = atoi(temp.c_str());
+        my_str.copy(N, X, L);
+    } else if (cmd.compare("add") == 0){
+        string s1 = get_str(s, my_str);
+        string s2 = get_str(s, my_str);
+        s.insert(0, " ");
+        s.insert(0, my_str.add(s1, s2));
+    } else if (cmd.compare("find")){
+        string s1 = get_str(s, my_str);
+        int N = get_int(s, my_str);
+        s.insert(0, " ");
+        s.insert(0, my_str.find(s1, N));
+    } else if (cmd.compare("rfind")){
+        string s1 = get_str(s, my_str);
+        int N = get_int(s, my_str);
+        s.insert(0, " ");
+        s.insert(0, my_str.rfind(s1, N));
+    } else if (cmd.compare("insert")){
+        string s1 = get_str(s, my_str);
+        int N = get_int(s, my_str);
+        int X = get_int(s, my_str);
+        my_str.insert(s1, N, X);
+    } else if (cmd.compare("reset")){
+        string s1 = get_str(s, my_str);
+        int N = get_int(s, my_str);
+        my_str.reset(s1, N);
+    } else if (cmd.compare("print")){
+        int N = get_int(s, my_str);
+        my_str.print(N);
+    } else if (cmd.compare("printall")){
+        my_str.printall();
+    }
+}
+
+
 
 
 
