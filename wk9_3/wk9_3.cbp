@@ -19,9 +19,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="part_3.c">
-			<Option compilerVar="CC" />
-		</Unit>
+		<Unit filename="wk9_3.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />
