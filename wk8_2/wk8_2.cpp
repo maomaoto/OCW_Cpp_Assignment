@@ -1,36 +1,14 @@
 ﻿#include <iostream>
-#include <iomanip>
+//#include <iomanip>
 #include <cstring>
-#include <cctype>
+//#include <cctype>
 #include <cstdlib>
 #include <set>
 #include <map>
 using namespace std;
 
 map<int, multiset<int> > mmid;
-
-bool is_command(string cmd){
-    if (cmd.compare("copy") == 0){
-        return true;
-    } else if (cmd.compare("add") == 0){
-        return true;
-    } else if (cmd.compare("find") == 0){
-        return true;
-    } else if (cmd.compare("rfind") == 0){
-        return true;
-    } else if (cmd.compare("insert") == 0){
-        return true;
-    } else if (cmd.compare("reset") == 0){
-        return true;
-    } else if (cmd.compare("print") == 0){
-        return true;
-    } else if (cmd.compare("printall") == 0){
-        return true;
-    } else {
-        return false;
-    }
-}
-
+typedef multiset<int> MSET;
 
 string get_str(string &s){
     string temp;
@@ -65,24 +43,72 @@ int main()  {
 
 
     cin >> n;
-    getline(cin, temp);  // remove "return line"
+    //getline(cin, temp);  // remove "return line"
 
     for (int i = 0; i<n; i++){
-        getline(cin, temp);
-        cmd = get_str(temp);
+        //getline(cin, temp);
+        //cmd = get_str(temp);
+        cin >> cmd;
         if (cmd.compare("new") == 0){
             // add a multiset
-            int id = atoi(get_str(temp).c_str());
-            mmid.insert(make_pair(id, multiset<int>));
+            //int id = atoi(get_str(temp).c_str());
+            int id;
+            cin >> id;
+            MSET sequence;
+            mmid.insert(make_pair(id, sequence));
 
         } else if (cmd.compare("add") == 0){
-            int id = atoi(get_str(temp).c_str());
-            int num = atoi(get_str(temp).c_str());
-
+            //int id = atoi(get_str(temp).c_str());
+            //int num = atoi(get_str(temp).c_str());
+            int id, num;
+            cin >> id >> num;
+            mmid[id].insert(num);
 
         } else if (cmd.compare("merge") == 0){
+            //int id1 = atoi(get_str(temp).c_str());
+            //int id2 = atoi(get_str(temp).c_str());
+            int id1, id2;
+            cin >> id1 >> id2;
+            if (id1 != id2) {
+                for (MSET::iterator it = mmid[id2].begin(); it != mmid[id2].end(); it++){
+                    mmid[id1].insert(*it);
+                }
+                mmid[id2].clear();
+            }
+
         } else if (cmd.compare("unique") == 0){
+            //int id = atoi(get_str(temp).c_str());
+            int id;
+            cin >> id;
+
+            set<int> temp_set;
+            // copy all elements from multiset to set, repeated items are auto neglected.
+            temp_set.insert(mmid[id].begin(), mmid[id].end());
+            /*
+            for (MSET::iterator it = mmid[id].begin(); it != mmid[id].end(); it++){
+                temp_set.insert(*it);
+            }
+            */
+            // clear multiset, and copy cleared elements back to multiset
+            mmid[id].clear();
+            mmid[id].insert(temp_set.begin(), temp_set.end());
+            /*
+            for (set<int>::iterator it = temp_set.begin(); it != temp_set.end(); it++){
+                mmid[id].insert(*it);
+            }
+            */
+            temp_set.clear();
+
+
         } else if (cmd.compare("out") == 0){
+            //int id = atoi(get_str(temp).c_str());
+            int id;
+            cin >> id;
+            for (MSET::iterator it = mmid[id].begin(); it != mmid[id].end(); it++){
+                cout << *it << ' ';
+            }
+            cout << endl;
+
         }
     }
 
